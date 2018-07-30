@@ -188,7 +188,9 @@ canvas.on('object:modified', changeCallback);
 
 function changeCallback() {
     changedData = canvas.toJSON();
+    console.log(changedData);
     delta = jsondiffpatch.diff(currentData.objects, changedData.objects);
+    console.log(delta);
     socket.emit('drawCanvas', changedData);
     console.log(changedData);
     currentData = changedData;

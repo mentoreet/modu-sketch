@@ -33,8 +33,23 @@ var cors = require('cors');
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));  
 });*/
- app.use('/', serveStatic(path.join(__dirname, 'public')));
- app.use(cors());
+ //app.use('/', serveStatic(path.join(__dirname, 'public')));
+ var allowedOrigins = ['http://localhost:5060', 'stg.moducoding.com', 'moducoding.com']
+ app.use(cors({
+    origin: function(origin, callback){
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var mag = 'The CORS policy for this site does not allow access from the specified Origin.';
+
+        return callback(new Error(msg), false);
+      }
+
+      return callback(null, true);
+    }
+ }));
 
  app.configure('development', function(){
   app.use(express.errorHandler());
